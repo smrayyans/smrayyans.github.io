@@ -57,7 +57,7 @@ a:hover {
 }
 
 .container {
-  width: min(800px, 100% - 48px);
+  width: min(800px, 100% - 80px);
   margin: 0 auto;
 }
 
@@ -70,6 +70,7 @@ a:hover {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   line-height: 1.1;
   margin-bottom: 24px;
+  word-wrap: break-word; /* Prevent overflow on small screens */
 }
 
 .bio {
@@ -144,6 +145,8 @@ a:hover {
   color: var(--accent);
   transform: translateX(0);
   transition: transform 0.2s ease;
+  flex-shrink: 0; /* Prevent arrow from squishing */
+  margin-left: 16px; /* Ensure spacing between text and arrow */
 }
 
 .tool-card:hover .arrow-icon {
@@ -169,4 +172,56 @@ a:hover {
 
 .social-links a:hover {
   text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .container {
+    width: min(800px, 100% - 48px); /* Increased margins on mobile */
+  }
+
+  .hero {
+    padding: 60px 0 40px;
+  }
+
+  .hero h1 {
+    font-size: 2rem; /* Smaller heading for mobile */
+  }
+
+  .bio {
+    font-size: 1rem;
+    margin-bottom: 32px;
+  }
+  
+  .primary-links {
+    font-size: 1rem;
+    gap: 20px;
+  }
+
+  .featured-section {
+    margin: 40px 0;
+  }
+
+  .tool-card {
+    padding: 24px; /* Reduced padding */
+  }
+  
+  .tool-info h3 {
+    font-size: 1.25rem;
+  }
+  
+  .tool-info p {
+    font-size: 0.95rem;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 32px 0;
+  }
+  
+  .social-links {
+    gap: 24px;
+  }
 }
