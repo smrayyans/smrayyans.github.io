@@ -1,26 +1,15 @@
 :root {
-  color-scheme: light;
-  --bg: #f6f7f3;
-  --surface: #ffffff;
-  --ink: #1c1c1c;
-  --muted: #5f5f5f;
-  --accent: #c4ef17;
-  --accent-text: #1c1c1c; /* Text on accent color */
-  --line: #e3e6dd;
-  --radius-lg: 24px;
-  --radius-md: 16px;
-  --shadow: 0 20px 60px rgba(29, 26, 23, 0.08);
-}
-
-body.dark-mode {
   color-scheme: dark;
   --bg: #1c1c1c;
-  --surface: #252525;
-  --ink: #ffffff;
-  --muted: #a0a0a0;
-  --accent: #C4EF17;
+  --surface: #232323;
+  --surface-2: #292929;
+  --ink: #f5f5f2;
+  --muted: #b1b4ad;
+  --accent: #c4ef17;
   --accent-text: #1c1c1c;
-  --line: #333333;
+  --line: #353535;
+  --radius-lg: 24px;
+  --radius-md: 16px;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
@@ -33,7 +22,6 @@ body {
   font-family: "Space Grotesk", sans-serif;
   background-color: var(--bg);
   color: var(--ink);
-  transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,17 +33,11 @@ body::before {
   inset: 0;
   background:
     radial-gradient(circle at 20% 10%, rgba(196, 239, 23, 0.12), transparent 45%),
-    radial-gradient(circle at 80% 20%, rgba(28, 28, 28, 0.05), transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(196, 239, 23, 0.06), transparent 55%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-body.dark-mode::before {
-  background:
-    radial-gradient(circle at 20% 10%, rgba(196, 239, 23, 0.12), transparent 45%),
     radial-gradient(circle at 80% 20%, rgba(196, 239, 23, 0.05), transparent 50%),
     radial-gradient(circle at 50% 80%, rgba(196, 239, 23, 0.08), transparent 55%);
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
 }
 
 h1, h2, h3 {
@@ -77,37 +59,6 @@ a:hover {
 .container {
   width: min(800px, 100% - 48px);
   margin: 0 auto;
-}
-
-/* Header */
-.site-header {
-  display: flex;
-  justify-content: flex-end;
-  padding: 32px 0;
-}
-
-.theme-btn {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.theme-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.theme-btn svg {
-  width: 20px;
-  height: 20px;
 }
 
 /* Hero */
@@ -218,9 +169,4 @@ a:hover {
 
 .social-links a:hover {
   text-decoration: underline;
-}
-
-/* Utility */
-.hidden {
-  display: none;
 }
