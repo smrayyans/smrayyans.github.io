@@ -7,9 +7,7 @@
   <title>Syed Muhammad Rayyan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400&family=Space+Grotesk:wght@400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -18,45 +16,235 @@
   <div class="container">
 
     <main>
+
+      <!-- Hero -->
       <section class="hero">
         <h1>Syed Muhammad Rayyan</h1>
         <p class="bio">
-          Software engineer and designer based in Pakistan. I build digital tools that focus on clarity, privacy, and
-          calm user experiences.
+          Cybersecurity student and offensive security intern based in Karachi, Pakistan.
+          Focused on penetration testing, vulnerability assessment, and security research.
+          Top 6% on TryHackMe. Currently pursuing CEH.
         </p>
         <nav class="primary-links">
-          <a href="https://tools.smrayyans.me">Tools</a>
+          <a href="#experience">Experience</a>
           <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
           <a href="#contact">Contact</a>
         </nav>
       </section>
 
-      <section id="tools" class="featured-section">
-        <span class="section-label">Featured Tool</span>
-        <a href="https://tools.smrayyans.me" class="tool-card">
-          <div class="tool-info">
-            <h3>WhatsViz</h3>
-            <p>Private, local-first WhatsApp chat visualizer.</p>
+      <!-- Experience -->
+      <section id="experience" class="content-section">
+        <span class="section-label">Experience</span>
+
+        <div class="experience-list">
+          <div class="experience-item">
+            <div class="experience-header">
+              <div>
+                <h3>Offensive Security Intern</h3>
+                <span class="experience-org">Cyberster</span>
+              </div>
+              <span class="experience-date">Feb 2026 &ndash; Apr 2026</span>
+            </div>
+            <ul class="experience-points">
+              <li>Conducted offensive security assessments and vulnerability research as part of a structured internship program.</li>
+              <li>Produced professional security reports with findings, severity ratings, business impact, and remediation guidance.</li>
+              <li>Applied penetration testing methodology across reconnaissance, exploitation, and post-exploitation phases.</li>
+            </ul>
           </div>
-          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
+
+          <div class="experience-item">
+            <div class="experience-header">
+              <div>
+                <h3>Cyber Security Student (Self-Directed)</h3>
+                <span class="experience-org">TryHackMe</span>
+              </div>
+              <span class="experience-date">Aug 2025 &ndash; Present</span>
+            </div>
+            <ul class="experience-points">
+              <li>Ranked in the top 6% globally. Completed Jr. Pentester, Web Fundamentals, Cyber Security 101, and Pre Security learning paths.</li>
+              <li>Completed practical labs covering network scanning, web application attacks, privilege escalation, and CTF challenges.</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-header">
+              <div>
+                <h3>Junior Graphic Designer</h3>
+                <span class="experience-org">Alpha AI Solutions, Karachi</span>
+              </div>
+              <span class="experience-date">Dec 2024 &ndash; Aug 2025</span>
+            </div>
+            <ul class="experience-points">
+              <li>Produced visual and design deliverables for an AI-focused startup while collaborating across teams to meet deadlines.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="content-section">
+        <span class="section-label">Projects</span>
+        <div class="project-grid">
+
+          <a href="https://github.com/smrayyans/DVAPI-walkthrough" target="_blank" class="project-card">
+            <div class="project-info">
+              <h3>DVAPI Walkthrough</h3>
+              <p>Complete exploitation of all OWASP API Top 10 vulnerabilities on DVAPI. Burp Suite, JWT attacks, NoSQLi, SSRF, mass assignment, BOLA, BFLA.</p>
+              <div class="project-tags">
+                <span class="tag">OWASP API</span>
+                <span class="tag">Burp Suite</span>
+                <span class="tag">Pentest</span>
+              </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+
+          <a href="https://smrayyans.me/smrwiki" target="_blank" class="project-card">
+            <div class="project-info">
+              <h3>SMR Wiki</h3>
+              <p>Personal pentesting and bug bounty reference wiki. Covers web attacks, API security, network attacks, privilege escalation, Active Directory, and post-exploitation.</p>
+              <div class="project-tags">
+                <span class="tag">Wiki</span>
+                <span class="tag">Cheatsheet</span>
+                <span class="tag">Reference</span>
+              </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+
+          <a href="https://github.com/smrayyans" target="_blank" class="project-card">
+            <div class="project-info">
+              <h3>CTF Writeups</h3>
+              <p>TryHackMe challenge writeups and Hacker101 CTF solutions. Documented methodology, tools, and exploitation steps for each room.</p>
+              <div class="project-tags">
+                <span class="tag">TryHackMe</span>
+                <span class="tag">Hacker101</span>
+                <span class="tag">CTF</span>
+              </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="content-section">
+        <span class="section-label">Skills</span>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Penetration Testing</h4>
+            <p>Network pentesting, web application testing, VAPT, CTF challenges</p>
+          </div>
+          <div class="skill-group">
+            <h4>Tools</h4>
+            <p>Nmap, Burp Suite, Metasploit, Wireshark, Gobuster, Netcat, Hydra</p>
+          </div>
+          <div class="skill-group">
+            <h4>Operating Systems</h4>
+            <p>Kali Linux, Parrot OS, Windows</p>
+          </div>
+          <div class="skill-group">
+            <h4>Programming</h4>
+            <p>Python, Bash scripting, C, basic SQL</p>
+          </div>
+          <div class="skill-group">
+            <h4>Networking</h4>
+            <p>TCP/IP, DNS, HTTP/S, network protocols, OWASP Top 10</p>
+          </div>
+          <div class="skill-group">
+            <h4>Concepts</h4>
+            <p>Reconnaissance, exploitation, privilege escalation, post-exploitation, reporting</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications -->
+      <section class="content-section">
+        <span class="section-label">Certifications</span>
+        <div class="cert-list">
+          <div class="cert-item">
+            <span class="cert-name">Certified Ethical Hacker (CEH)</span>
+            <span class="cert-meta">Corvit Systems Karachi &mdash; In Progress (Feb 2026 &ndash; May 2026)</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">Web Fundamentals</span>
+            <span class="cert-meta">TryHackMe &mdash; Mar 2026</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">Cyber Security 101</span>
+            <span class="cert-meta">TryHackMe &mdash; Feb 2026</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">Pre Security</span>
+            <span class="cert-meta">TryHackMe &mdash; Jan 2026</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">CS50's Introduction to Computer Science</span>
+            <span class="cert-meta">Harvard University &mdash; Jun 2025</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">Python Essentials 1</span>
+            <span class="cert-meta">Cisco Networking Academy &mdash; Dec 2025</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-name">Introduction to Cybersecurity</span>
+            <span class="cert-meta">Cisco Networking Academy &mdash; Oct 2025</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="content-section">
+        <span class="section-label">Education</span>
+        <div class="experience-list">
+          <div class="experience-item">
+            <div class="experience-header">
+              <div>
+                <h3>Bachelor of Science in Computer Science</h3>
+                <span class="experience-org">University of Karachi (UBIT)</span>
+              </div>
+              <span class="experience-date">Feb 2024 &ndash; Apr 2028</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CV Download -->
+      <section class="content-section cv-section">
+        <a href="rayyan-cv.pdf" download class="cv-button">
+          Download CV
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
         </a>
       </section>
+
     </main>
 
     <footer class="site-footer" id="contact">
       <div class="email">
-        <a href="mailto:support@smrayyans.me">support@smrayyans.me</a>
+        <a href="mailto:rayyanshahnawaz041@gmail.com">rayyanshahnawaz041@gmail.com</a>
       </div>
       <div class="social-links">
         <a href="https://github.com/smrayyans" target="_blank">GitHub</a>
-        <a href="#" target="_blank">Twitter</a>
         <a href="https://www.linkedin.com/in/smrayyans/" target="_blank">LinkedIn</a>
+        <a href="https://tryhackme.com/p/smrayyans" target="_blank">TryHackMe</a>
       </div>
     </footer>
+
   </div>
 
 </body>
