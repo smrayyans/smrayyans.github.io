@@ -1,252 +1,1474 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Syed Muhammad Rayyan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Syed Muhammad Rayyan - Offensive Security</title>
+<meta name="description" content="Cybersecurity student and offensive security professional. Karachi, Pakistan." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Tokens - Inverted PCViewer dark
+   ============================================================ */
+:root {
+  --paper:  #050507;          /* page background - near-black, very faint cool tint */
+  --ash:    #0B0B0E;          /* card surface */
+  --ash-2:  #101015;          /* hover surface */
+  --line:   rgba(255,255,255,0.10);
+  --line-2: rgba(255,255,255,0.18);
+  --ink:    #F4F4F5;          /* primary text */
+  --mute:   #8A8A93;          /* secondary text, eyebrows */
+  --mute-2: #5A5A63;          /* tertiary, dividers in copy */
+  --signal: #C7D2FE;          /* cool white-blue - single accent for live signals */
+  --signal-glow: rgba(199, 210, 254, 0.18);
 
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --fs-display:  clamp(40px, 6.4vw, 76px);
+  --fs-h1:       clamp(24px, 2.4vw, 30px);
+  --fs-h2:       18px;
+  --fs-body-lg:  16px;
+  --fs-body:     14px;
+  --fs-helper:   12px;
+  --fs-2xs:      11px;
+
+  --tracking-tight:  -0.018em;
+  --tracking-wide:   0.08em;
+  --tracking-widest: 0.16em;
+
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-pill: 9999px;
+
+  --dur:  150ms;
+  --dur-2: 320ms;
+  --ease: ease;
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+
+  --max-w: 1180px;
+  --gutter: clamp(20px, 4vw, 40px);
+}
+
+/* ============================================================
+   Reset / base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  text-rendering: optimizeLegibility;
+}
+body {
+  min-height: 100vh;
+  /* atmospheric backdrop - extremely subtle, no gradients in the loud sense */
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(199,210,254,0.04), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(255,255,255,0.025), transparent 65%),
+    var(--paper);
+}
+::selection { background: var(--ink); color: var(--paper); }
+:focus-visible { outline: 1px solid var(--signal); outline-offset: 2px; border-radius: 2px; }
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3, h4, p, ul, ol { margin: 0; padding: 0; }
+ul { list-style: none; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+
+/* ============================================================
+   Type utilities
+   ============================================================ */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--mute);
+}
+.mono { font-family: var(--font-mono); }
+.helper { color: var(--mute); font-size: var(--fs-helper); }
+
+/* ============================================================
+   Layout primitives
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.hair      { border: 0.5px solid var(--line); }
+.hair-t    { border-top: 0.5px solid var(--line); }
+.hair-b    { border-bottom: 0.5px solid var(--line); }
+
+.dot {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--mute);
+  vertical-align: middle;
+}
+.dot-active {
+  background: var(--signal);
+  box-shadow: 0 0 0 3px var(--signal-glow);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(199,210,254,0.18); }
+  50%      { box-shadow: 0 0 0 5px rgba(199,210,254,0.06); }
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px;
+  border: 0.5px solid var(--line-2);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+}
+.badge-mono { font-family: var(--font-mono); letter-spacing: 0; text-transform: none; }
+
+/* ============================================================
+   Scroll progress (top hairline)
+   ============================================================ */
+.progress-rail {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: transparent;
+  z-index: 60;
+  pointer-events: none;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+  transition: width 80ms linear;
+}
+
+/* ============================================================
+   Top nav
+   ============================================================ */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(5, 5, 7, 0.78);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 0.5px solid var(--line);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+  gap: 24px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+.brand-mark {
+  width: 14px; height: 14px;
+  background: var(--ink);
+  display: inline-block;
+  position: relative;
+}
+.brand-mark::after {
+  content: '';
+  position: absolute; inset: 4px;
+  background: var(--paper);
+}
+.brand-name { letter-spacing: 0.02em; }
+.brand-handle { color: var(--mute); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 28px;
+}
+.nav-link {
+  font-size: var(--fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--mute);
+  position: relative;
+  padding: 6px 0;
+  transition: color var(--dur) var(--ease);
+}
+.nav-link:hover, .nav-link.is-active { color: var(--ink); }
+.nav-link.is-active::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 1px; background: var(--ink);
+}
+.nav-meta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+.nav-meta .sep { color: var(--mute-2); }
+.nav-meta .live {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--ink);
+}
+
+/* mobile nav toggle */
+.nav-toggle { display: none; }
+@media (max-width: 760px) {
+  .nav-links { display: none; }
+  .nav-meta .sep, .nav-meta .loc { display: none; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--mute);
+  }
+  .mobile-sheet {
+    position: fixed; inset: 56px 0 0 0;
+    background: var(--paper);
+    border-top: 0.5px solid var(--line);
+    z-index: 49;
+    padding: 24px var(--gutter);
+    transform: translateY(-100%);
+    transition: transform 220ms var(--ease-out);
+  }
+  .mobile-sheet.open { transform: translateY(0); }
+  .mobile-sheet a {
+    display: block; padding: 16px 0;
+    border-bottom: 0.5px solid var(--line);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--ink);
+  }
+}
+
+/* ============================================================
+   Section scaffold - editorial two-column
+   ============================================================ */
+section { padding: 96px 0; position: relative; }
+@media (max-width: 760px) { section { padding: 64px 0; } }
+
+.section-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .section-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.section-rail {
+  position: sticky; top: 88px;
+  align-self: start;
+}
+.section-rail .num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mute-2);
+  letter-spacing: 0.1em;
+}
+.section-rail .label {
+  margin-top: 10px;
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--ink);
+}
+.section-rail .rule {
+  width: 24px; height: 1px; background: var(--ink);
+  margin-top: 16px;
+}
+.section-rail .helper {
+  margin-top: 16px;
+  max-width: 200px;
+  color: var(--mute);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.section-title {
+  font-size: var(--fs-h1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+  margin-bottom: 8px;
+  text-wrap: balance;
+}
+.section-lede {
+  color: var(--mute);
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+  max-width: 60ch;
+  margin-bottom: 40px;
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero { padding: 120px 0 96px; position: relative; }
+@media (max-width: 760px) { .hero { padding: 80px 0 64px; } }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 32px;
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.hero-eyebrow .sep { color: var(--mute-2); }
+
+.hero h1 {
+  font-size: var(--fs-display);
+  line-height: 1.02;
+  letter-spacing: var(--tracking-tight);
+  font-weight: 500;
+  text-wrap: balance;
+}
+.hero h1 .accent {
+  color: var(--mute);
+}
+
+.hero-bio {
+  margin-top: 28px;
+  max-width: 56ch;
+  color: var(--mute);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.6;
+}
+.hero-bio strong { color: var(--ink); font-weight: 500; }
+
+.hero-meta {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border-top: 0.5px solid var(--line);
+  border-bottom: 0.5px solid var(--line);
+}
+.hero-meta > div {
+  padding: 18px 20px;
+  border-right: 0.5px solid var(--line);
+}
+.hero-meta > div:last-child { border-right: 0; }
+.hero-meta .k {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--mute);
+  margin-bottom: 8px;
+}
+.hero-meta .v {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+.hero-meta .v.signal { color: var(--signal); }
+@media (max-width: 760px) {
+  .hero-meta { grid-template-columns: 1fr 1fr; }
+  .hero-meta > div:nth-child(2n) { border-right: 0; }
+  .hero-meta > div:nth-child(-n+2) { border-bottom: 0.5px solid var(--line); }
+}
+
+.hero-cta {
+  margin-top: 36px;
+  display: flex; flex-wrap: wrap; gap: 12px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border: 0.5px solid var(--line-2);
+  background: transparent;
+  color: var(--ink);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.btn:hover { background: var(--ash-2); border-color: var(--ink); }
+.btn .arr { font-family: var(--font-mono); color: var(--mute); transition: color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.btn:hover .arr { color: var(--ink); transform: translateX(2px); }
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.btn-primary .arr { color: var(--paper); }
+.btn-primary:hover { background: var(--ink); opacity: 0.88; }
+
+/* hero corner brackets */
+.brackets {
+  position: absolute; pointer-events: none;
+  top: 80px; left: var(--gutter); right: var(--gutter); bottom: 40px;
+}
+.bracket {
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 0.5px solid var(--line-2);
+}
+.bracket.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.bracket.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.bracket.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.bracket.br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+@media (max-width: 760px) { .brackets { display: none; } }
+
+/* ============================================================
+   Experience - timeline rows
+   ============================================================ */
+.xp { display: grid; gap: 0; }
+.xp-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 0.5px solid var(--line);
+  align-items: baseline;
+  transition: background var(--dur-2) var(--ease);
+}
+.xp-row:first-child { border-top: 0.5px solid var(--line); }
+.xp-row:hover { background: rgba(255,255,255,0.015); }
+
+.xp-when {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+.xp-body { min-width: 0; }
+.xp-role {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -0.005em;
+}
+.xp-org {
+  font-size: 13px;
+  color: var(--mute);
+  font-family: var(--font-mono);
+  margin-bottom: 12px;
+}
+.xp-org .sep { color: var(--mute-2); margin: 0 8px; }
+.xp-desc {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.65;
+  max-width: 62ch;
+  opacity: 0.85;
+}
+.xp-tags {
+  margin-top: 14px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.xp-status {
+  align-self: start;
+  white-space: nowrap;
+  padding-top: 4px;
+}
+
+@media (max-width: 760px) {
+  .xp-row { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+  .xp-status { padding-top: 0; }
+}
+
+/* ============================================================
+   Projects - dossier cards
+   ============================================================ */
+.projects { display: grid; gap: 16px; }
+.project {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 28px;
+  padding: 28px 24px;
+  background: var(--ash);
+  border: 0.5px solid var(--line);
+  border-radius: var(--r-md);
+  align-items: start;
+  transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+.project::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--ink);
+  transition: width var(--dur-2) var(--ease-out);
+}
+.project:hover {
+  border-color: var(--line-2);
+  background: var(--ash-2);
+}
+.project:hover::before { width: 2px; }
+
+.project-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mute-2);
+  letter-spacing: 0.1em;
+  padding-top: 4px;
+}
+.project-main { min-width: 0; }
+.project-head {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 8px;
+}
+.project-title {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.project-url {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+  margin-bottom: 14px;
+  word-break: break-all;
+  transition: color var(--dur) var(--ease);
+}
+.project:hover .project-url { color: var(--signal); }
+.project-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+  opacity: 0.85;
+  max-width: 62ch;
+}
+.project-stack {
+  margin-top: 14px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.project-cta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding-top: 4px;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.project:hover .project-cta { color: var(--ink); }
+.project-cta .arr { transition: transform var(--dur) var(--ease); }
+.project:hover .project-cta .arr { transform: translateX(3px); }
+
+@media (max-width: 760px) {
+  .project { grid-template-columns: 1fr; gap: 12px; padding: 22px 18px; }
+  .project-num { padding-top: 0; }
+  .project-cta { padding-top: 0; }
+}
+
+/* ============================================================
+   Skills - hairline matrix table
+   ============================================================ */
+.skills-table {
+  border-top: 0.5px solid var(--line);
+}
+.skill-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  padding: 22px 0;
+  border-bottom: 0.5px solid var(--line);
+  align-items: baseline;
+}
+.skill-cat {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--mute);
+  font-weight: 500;
+}
+.skill-list {
+  display: flex; flex-wrap: wrap; gap: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+.skill-list span {
+  display: inline-flex; align-items: center;
+}
+.skill-list span + span::before {
+  content: '·';
+  color: var(--mute-2);
+  margin: 0 12px 0 0;
+}
+@media (max-width: 760px) {
+  .skill-row { grid-template-columns: 1fr; gap: 8px; padding: 18px 0; }
+}
+
+/* ============================================================
+   Certifications
+   ============================================================ */
+.certs { display: grid; gap: 0; border-top: 0.5px solid var(--line); }
+.cert-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 100px;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 0.5px solid var(--line);
+  align-items: center;
+}
+.cert-name {
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.cert-issuer {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+.cert-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--mute);
+  text-align: right;
+}
+.cert-status.in-progress { color: var(--signal); }
+.cert-status.complete { color: var(--ink); }
+
+@media (max-width: 760px) {
+  .cert-row {
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+  }
+  .cert-issuer { grid-column: 1 / 2; }
+  .cert-status { grid-column: 2 / 3; grid-row: 1 / 3; align-self: center; }
+}
+
+/* ============================================================
+   CV section
+   ============================================================ */
+.cv {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  padding: 36px;
+  background: var(--ash);
+  border: 0.5px solid var(--line);
+  border-radius: var(--r-md);
+  align-items: center;
+}
+.cv-title {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: 6px;
+}
+.cv-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+@media (max-width: 760px) {
+  .cv { grid-template-columns: 1fr; padding: 28px 22px; gap: 20px; }
+}
+
+/* ============================================================
+   Contact strip
+   ============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 0.5px solid var(--line);
+  border-bottom: 0.5px solid var(--line);
+}
+.contact-cell {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 0;
+  border-bottom: 0.5px solid var(--line);
+  transition: background var(--dur) var(--ease);
+}
+.contact-cell:last-child, .contact-cell:nth-last-child(2) { border-bottom: 0; }
+.contact-cell:nth-child(odd)  { padding-right: 24px; border-right: 0.5px solid var(--line); }
+.contact-cell:nth-child(even) { padding-left: 24px; }
+.contact-cell:hover .contact-v { color: var(--signal); }
+.contact-cell:hover .arr { transform: translateX(3px); color: var(--ink); }
+.contact-k {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--mute);
+}
+.contact-v {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink);
+  display: inline-flex; align-items: center; gap: 12px;
+  transition: color var(--dur) var(--ease);
+}
+.contact-v .arr { color: var(--mute); transition: transform var(--dur) var(--ease), color var(--dur) var(--ease); }
+
+@media (max-width: 760px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-cell:nth-child(odd) { padding-right: 0; border-right: 0; }
+  .contact-cell:nth-child(even) { padding-left: 0; }
+  .contact-cell { border-bottom: 0.5px solid var(--line); }
+  .contact-cell:last-child { border-bottom: 0; }
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+footer {
+  padding: 48px 0 60px;
+  border-top: 0.5px solid var(--line);
+}
+.footer-grid {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  flex-wrap: wrap;
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mute);
+  line-height: 1.7;
+}
+.footer-meta .v { color: var(--ink); }
+.footer-links {
+  display: flex; gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.footer-links a {
+  color: var(--mute);
+  transition: color var(--dur) var(--ease);
+}
+.footer-links a:hover { color: var(--ink); }
+
+/* ============================================================
+   Reveal animation (one-time on intersect)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-children > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+.reveal-children.in > * { opacity: 1; transform: translateY(0); }
+.reveal-children.in > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-children.in > *:nth-child(2) { transition-delay: 60ms; }
+.reveal-children.in > *:nth-child(3) { transition-delay: 120ms; }
+.reveal-children.in > *:nth-child(4) { transition-delay: 180ms; }
+.reveal-children.in > *:nth-child(5) { transition-delay: 240ms; }
+.reveal-children.in > *:nth-child(6) { transition-delay: 300ms; }
+.reveal-children.in > *:nth-child(7) { transition-delay: 360ms; }
+.reveal-children.in > *:nth-child(8) { transition-delay: 420ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-children > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .dot-active { animation: none; }
+}
+
+/* ============================================================
+   Print
+   ============================================================ */
+@media print {
+  body { background: white; color: black; }
+  .nav, .progress-rail, .hero-cta, .cv, .brackets { display: none; }
+}
+</style>
+</head>
 <body>
 
-  <div class="container">
+<!-- scroll progress -->
+<div class="progress-rail" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
 
-    <main>
+<!-- nav -->
+<header class="nav" role="banner">
+  <div class="container nav-inner">
+    <a href="#top" class="brand" aria-label="Syed Muhammad Rayyan - home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Rayyan</span>
+      <span class="brand-handle">/ smrayyans</span>
+    </a>
 
-      <!-- Hero -->
-      <section class="hero">
-        <h1>Syed Muhammad Rayyan</h1>
-        <p class="bio">
-          Cybersecurity student and offensive security intern based in Karachi, Pakistan.
-          Focused on penetration testing, vulnerability assessment, and security research.
-          Top 6% on TryHackMe. Currently pursuing CEH.
-        </p>
-        <nav class="primary-links">
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </section>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-link" href="#experience" data-target="experience">Experience</a>
+      <a class="nav-link" href="#projects"   data-target="projects">Projects</a>
+      <a class="nav-link" href="#skills"     data-target="skills">Skills</a>
+      <a class="nav-link" href="#contact"    data-target="contact">Contact</a>
+    </nav>
 
-      <!-- Experience -->
-      <section id="experience" class="content-section">
-        <span class="section-label">Experience</span>
+    <div class="nav-meta" aria-hidden="true">
+      <span class="loc">Karachi, PK</span>
+      <span class="sep">·</span>
+      <span class="live"><span class="dot dot-active"></span><span id="clock">-</span></span>
+    </div>
 
-        <div class="experience-list">
-          <div class="experience-item">
-            <div class="experience-header">
-              <div>
-                <h3>Offensive Security Intern</h3>
-                <span class="experience-org">Cyberster</span>
-              </div>
-              <span class="experience-date">Feb 2026 &ndash; Apr 2026</span>
-            </div>
-            <ul class="experience-points">
-              <li>Conducted offensive security assessments and vulnerability research as part of a structured internship program.</li>
-              <li>Produced professional security reports with findings, severity ratings, business impact, and remediation guidance.</li>
-              <li>Applied penetration testing methodology across reconnaissance, exploitation, and post-exploitation phases.</li>
-            </ul>
-          </div>
-
-          <div class="experience-item">
-            <div class="experience-header">
-              <div>
-                <h3>Cyber Security Student (Self-Directed)</h3>
-                <span class="experience-org">TryHackMe</span>
-              </div>
-              <span class="experience-date">Aug 2025 &ndash; Present</span>
-            </div>
-            <ul class="experience-points">
-              <li>Ranked in the top 6% globally. Completed Jr. Pentester, Web Fundamentals, Cyber Security 101, and Pre Security learning paths.</li>
-              <li>Completed practical labs covering network scanning, web application attacks, privilege escalation, and CTF challenges.</li>
-            </ul>
-          </div>
-
-          <div class="experience-item">
-            <div class="experience-header">
-              <div>
-                <h3>Junior Graphic Designer</h3>
-                <span class="experience-org">Alpha AI Solutions, Karachi</span>
-              </div>
-              <span class="experience-date">Dec 2024 &ndash; Aug 2025</span>
-            </div>
-            <ul class="experience-points">
-              <li>Produced visual and design deliverables for an AI-focused startup while collaborating across teams to meet deadlines.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- Projects -->
-      <section id="projects" class="content-section">
-        <span class="section-label">Projects</span>
-        <div class="project-grid">
-
-          <a href="https://github.com/smrayyans/DVAPI-walkthrough" target="_blank" class="project-card">
-            <div class="project-info">
-              <h3>DVAPI Walkthrough</h3>
-              <p>Complete exploitation of all OWASP API Top 10 vulnerabilities on DVAPI. Burp Suite, JWT attacks, NoSQLi, SSRF, mass assignment, BOLA, BFLA.</p>
-              <div class="project-tags">
-                <span class="tag">OWASP API</span>
-                <span class="tag">Burp Suite</span>
-                <span class="tag">Pentest</span>
-              </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-
-          <a href="https://smrayyans.me/smrwiki" target="_blank" class="project-card">
-            <div class="project-info">
-              <h3>SMR Wiki</h3>
-              <p>Personal pentesting and bug bounty reference wiki. Covers web attacks, API security, network attacks, privilege escalation, Active Directory, and post-exploitation.</p>
-              <div class="project-tags">
-                <span class="tag">Wiki</span>
-                <span class="tag">Cheatsheet</span>
-                <span class="tag">Reference</span>
-              </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-
-          <a href="https://github.com/smrayyans" target="_blank" class="project-card">
-            <div class="project-info">
-              <h3>CTF Writeups</h3>
-              <p>TryHackMe challenge writeups and Hacker101 CTF solutions. Documented methodology, tools, and exploitation steps for each room.</p>
-              <div class="project-tags">
-                <span class="tag">TryHackMe</span>
-                <span class="tag">Hacker101</span>
-                <span class="tag">CTF</span>
-              </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-
-        </div>
-      </section>
-
-      <!-- Skills -->
-      <section id="skills" class="content-section">
-        <span class="section-label">Skills</span>
-        <div class="skills-grid">
-          <div class="skill-group">
-            <h4>Penetration Testing</h4>
-            <p>Network pentesting, web application testing, VAPT, CTF challenges</p>
-          </div>
-          <div class="skill-group">
-            <h4>Tools</h4>
-            <p>Nmap, Burp Suite, Metasploit, Wireshark, Gobuster, Netcat, Hydra</p>
-          </div>
-          <div class="skill-group">
-            <h4>Operating Systems</h4>
-            <p>Kali Linux, Parrot OS, Windows</p>
-          </div>
-          <div class="skill-group">
-            <h4>Programming</h4>
-            <p>Python, Bash scripting, C, basic SQL</p>
-          </div>
-          <div class="skill-group">
-            <h4>Networking</h4>
-            <p>TCP/IP, DNS, HTTP/S, network protocols, OWASP Top 10</p>
-          </div>
-          <div class="skill-group">
-            <h4>Concepts</h4>
-            <p>Reconnaissance, exploitation, privilege escalation, post-exploitation, reporting</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Certifications -->
-      <section class="content-section">
-        <span class="section-label">Certifications</span>
-        <div class="cert-list">
-          <div class="cert-item">
-            <span class="cert-name">Certified Ethical Hacker (CEH)</span>
-            <span class="cert-meta">Corvit Systems Karachi &mdash; In Progress (Feb 2026 &ndash; May 2026)</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">Web Fundamentals</span>
-            <span class="cert-meta">TryHackMe &mdash; Mar 2026</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">Cyber Security 101</span>
-            <span class="cert-meta">TryHackMe &mdash; Feb 2026</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">Pre Security</span>
-            <span class="cert-meta">TryHackMe &mdash; Jan 2026</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">CS50's Introduction to Computer Science</span>
-            <span class="cert-meta">Harvard University &mdash; Jun 2025</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">Python Essentials 1</span>
-            <span class="cert-meta">Cisco Networking Academy &mdash; Dec 2025</span>
-          </div>
-          <div class="cert-item">
-            <span class="cert-name">Introduction to Cybersecurity</span>
-            <span class="cert-meta">Cisco Networking Academy &mdash; Oct 2025</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education -->
-      <section class="content-section">
-        <span class="section-label">Education</span>
-        <div class="experience-list">
-          <div class="experience-item">
-            <div class="experience-header">
-              <div>
-                <h3>Bachelor of Science in Computer Science</h3>
-                <span class="experience-org">University of Karachi (UBIT)</span>
-              </div>
-              <span class="experience-date">Feb 2024 &ndash; Apr 2028</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CV Download -->
-      <section class="content-section cv-section">
-        <a href="rayyan-cv.pdf" download class="cv-button">
-          Download CV
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-        </a>
-      </section>
-
-    </main>
-
-    <footer class="site-footer" id="contact">
-      <div class="email">
-        <a href="mailto:rayyanshahnawaz041@gmail.com">rayyanshahnawaz041@gmail.com</a>
-      </div>
-      <div class="social-links">
-        <a href="https://github.com/smrayyans" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/smrayyans/" target="_blank">LinkedIn</a>
-        <a href="https://tryhackme.com/p/smrayyans" target="_blank">TryHackMe</a>
-      </div>
-    </footer>
-
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileSheet">
+      <span id="navToggleLabel">menu</span>
+      <span aria-hidden="true">+</span>
+    </button>
   </div>
 
-</body>
+  <div class="mobile-sheet" id="mobileSheet" hidden>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
 
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" data-screen-label="01 Hero">
+    <div class="brackets" aria-hidden="true">
+      <span class="bracket tl"></span>
+      <span class="bracket tr"></span>
+      <span class="bracket bl"></span>
+      <span class="bracket br"></span>
+    </div>
+
+    <div class="container">
+      <div class="hero-eyebrow reveal">
+        <span class="dot dot-active" aria-hidden="true"></span>
+        <span>Available for offensive security roles</span>
+        <span class="sep">·</span>
+        <span>2026</span>
+      </div>
+
+      <h1 class="reveal">
+        Syed Muhammad Rayyan.<br />
+        <span class="accent">Offensive security, in practice.</span>
+      </h1>
+
+      <p class="hero-bio reveal">
+        I am currently studying for the CEH certification and have a strong interest in cybersecurity. I am learning about ethical hacking, penetration testing, and network security. I am excited to grow my skills and help make the digital world safer.
+      </p>
+
+      <div class="hero-meta reveal">
+        <div>
+          <div class="k">Location</div>
+          <div class="v">Karachi · PK</div>
+        </div>
+        <div>
+          <div class="k">Focus</div>
+          <div class="v">Web · API · Recon</div>
+        </div>
+        <div>
+          <div class="k">TryHackMe</div>
+          <div class="v signal">Top 6% global</div>
+        </div>
+        <div>
+          <div class="k">Status</div>
+          <div class="v">CEH in progress</div>
+        </div>
+      </div>
+
+      <div class="hero-cta reveal">
+        <a class="btn btn-primary" href="./rayyan-cv.pdf" download>
+          <span>Download CV</span>
+          <span class="arr" aria-hidden="true">↓</span>
+        </a>
+        <a class="btn" href="#projects">
+          <span>View work</span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="btn" href="mailto:rayyanshahnawaz041@gmail.com">
+          <span>Get in touch</span>
+          <span class="arr" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" data-screen-label="02 Experience">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="num">02 / 06</div>
+          <div class="label">Experience</div>
+          <div class="rule"></div>
+          <p class="helper">Roles, in reverse chronological order. Security work first, design and ops below.</p>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">Where I've worked.</h2>
+          <p class="section-lede reveal">A short timeline. Self-directed study and CTFs sit alongside paid work - they're how the offensive skills got real.</p>
+
+          <div class="xp reveal-children">
+
+            <article class="xp-row">
+              <div class="xp-when">FEB 2026 -<br>APR 2026</div>
+              <div class="xp-body">
+                <h3 class="xp-role">Offensive Security Intern</h3>
+                <div class="xp-org">Cyberster</div>
+                <p class="xp-desc">
+                  • Conduct offensive security assessments and vulnerability research as part of a structured internship program.<br>
+                  • Produce professional security reports with findings, severity ratings, business impact, and remediation guidance.<br>
+                  • Apply penetration testing methodology across reconnaissance, exploitation, and post-exploitation phases.
+                </p>
+              </div>
+            </article>
+
+            <article class="xp-row">
+              <div class="xp-when">AUG 2025 -<br>PRESENT</div>
+              <div class="xp-body">
+                <h3 class="xp-role">Cyber Security Student (Self-Directed)</h3>
+                <div class="xp-org">TryHackMe</div>
+                <p class="xp-desc">
+                  • Ranked in the top 6% globally and completed the Jr. Pentester, Web Fundamentals, Cyber Security 101, and Pre Security learning paths.<br>
+                  • Completed practical labs covering network scanning, web application attacks, privilege escalation, and capture-the-flag challenges.
+                </p>
+              </div>
+            </article>
+
+            <article class="xp-row">
+              <div class="xp-when">DEC 2024 -<br>AUG 2025</div>
+              <div class="xp-body">
+                <h3 class="xp-role">Junior Graphic Designer</h3>
+                <div class="xp-org">Alpha AI Solutions <span class="sep">·</span> Karachi</div>
+                <p class="xp-desc">
+                  • Produced visual and design deliverables for an AI-focused startup while collaborating across teams to meet deadlines.
+                </p>
+              </div>
+            </article>
+
+            <article class="xp-row">
+              <div class="xp-when">AUG 2022 -<br>FEB 2023</div>
+              <div class="xp-body">
+                <h3 class="xp-role">Social Media Manager</h3>
+                <div class="xp-org">Vector Logistics <span class="sep">·</span> Karachi</div>
+                <p class="xp-desc">
+                  • Planned and executed social media campaigns, improving online engagement for a logistics company.
+                </p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" data-screen-label="03 Projects">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="num">03 / 06</div>
+          <div class="label">Projects</div>
+          <div class="rule"></div>
+          <p class="helper">Public artefacts - labs, walkthroughs, and a wiki of operator notes. All code on GitHub.</p>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">Selected work.</h2>
+          <p class="section-lede reveal">Each one is something I'd be glad to walk through line-by-line. Click through for the full repo or live site.</p>
+
+          <div class="projects reveal-children">
+            <a class="project" href="https://github.com/smrayyans/ctf-writeups-tryhackme" target="_blank" rel="noopener noreferrer">
+              <div class="project-num">001</div>
+              <div class="project-main">
+                <div class="project-head">
+                  <h3 class="project-title">CTF Writeups - TryHackMe</h3>
+                  <span class="badge"><span class="dot dot-active"></span>Public</span>
+                  <span class="badge badge-mono">repo</span>
+                </div>
+                <span class="project-url">github.com/smrayyans/ctf-writeups-tryhackme</span>
+                <p class="project-desc">A growing archive of TryHackMe writeups. Each one structured the same way: recon, foothold, lateral, root, lessons. Aimed at being useful to the next person who hits the same room.</p>
+                <div class="project-stack">
+                  <span class="badge badge-mono">Nmap</span>
+                  <span class="badge badge-mono">Metasploit</span>
+                  <span class="badge badge-mono">Linux</span>
+                  <span class="badge badge-mono">Active Directory</span>
+                </div>
+              </div>
+              <div class="project-cta">
+                <span>View repo</span>
+                <span class="arr" aria-hidden="true">→</span>
+              </div>
+            </a>
+
+            <a class="project" href="https://github.com/smrayyans/IMF-1-walkthrough" target="_blank" rel="noopener noreferrer">
+              <div class="project-num">002</div>
+              <div class="project-main">
+                <div class="project-head">
+                  <h3 class="project-title">IMF-1 Walkthrough</h3>
+                  <span class="badge"><span class="dot dot-active"></span>Public</span>
+                  <span class="badge badge-mono">repo</span>
+                </div>
+                <span class="project-url">github.com/smrayyans/IMF-1-walkthrough</span>
+                <p class="project-desc">A start-to-finish walkthrough of the IMF-1 boot-to-root CTF challenge. Detailed documentation covering recon, enumeration, exploitation, and privilege escalation.</p>
+                <div class="project-stack">
+                  <span class="badge badge-mono">CTF</span>
+                  <span class="badge badge-mono">Boot2Root</span>
+                  <span class="badge badge-mono">PrivEsc</span>
+                </div>
+              </div>
+              <div class="project-cta">
+                <span>View repo</span>
+                <span class="arr" aria-hidden="true">→</span>
+              </div>
+            </a>
+
+            <a class="project" href="https://github.com/smrayyans/DVAPI-walkthrough" target="_blank" rel="noopener noreferrer">
+              <div class="project-num">003</div>
+              <div class="project-main">
+                <div class="project-head">
+                  <h3 class="project-title">DVAPI Walkthrough</h3>
+                  <span class="badge"><span class="dot dot-active"></span>Public</span>
+                  <span class="badge badge-mono">repo</span>
+                </div>
+                <span class="project-url">github.com/smrayyans/DVAPI-walkthrough</span>
+                <p class="project-desc">A start-to-finish walkthrough of the Damn Vulnerable API - broken authentication, mass assignment, IDOR, rate-limit bypasses. Each finding mapped to OWASP API Top 10 with reproduction steps and fixes.</p>
+                <div class="project-stack">
+                  <span class="badge badge-mono">Burp Suite</span>
+                  <span class="badge badge-mono">Postman</span>
+                  <span class="badge badge-mono">OWASP API</span>
+                </div>
+              </div>
+              <div class="project-cta">
+                <span>View repo</span>
+                <span class="arr" aria-hidden="true">→</span>
+              </div>
+            </a>
+
+            <a class="project" href="https://github.com/smrayyans/ctf-writeups-hacker101" target="_blank" rel="noopener noreferrer">
+              <div class="project-num">004</div>
+              <div class="project-main">
+                <div class="project-head">
+                  <h3 class="project-title">CTF Writeups - Hacker101</h3>
+                  <span class="badge"><span class="dot dot-active"></span>Public</span>
+                  <span class="badge badge-mono">repo</span>
+                </div>
+                <span class="project-url">github.com/smrayyans/ctf-writeups-hacker101</span>
+                <p class="project-desc">Writeups for Hacker101 CTFs, detailing methodology, tools used, and key takeaways for each web vulnerability discovered.</p>
+                <div class="project-stack">
+                  <span class="badge badge-mono">Hacker101</span>
+                  <span class="badge badge-mono">Web</span>
+                  <span class="badge badge-mono">CTF</span>
+                </div>
+              </div>
+              <div class="project-cta">
+                <span>View repo</span>
+                <span class="arr" aria-hidden="true">→</span>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" data-screen-label="04 Skills">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="num">04 / 06</div>
+          <div class="label">Skills</div>
+          <div class="rule"></div>
+          <p class="helper">The toolkit. Grouped by category, listed honestly - things I've used in anger, not things I've read about.</p>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">What's in the kit.</h2>
+          <p class="section-lede reveal">A working inventory - the categories I think in when scoping an engagement, and the specific tools I default to within each.</p>
+
+          <div class="skills-table reveal-children">
+            <div class="skill-row">
+              <div class="skill-cat">Penetration testing</div>
+              <div class="skill-list">
+                <span>Web application</span><span>API</span><span>Network</span><span>Recon</span><span>Exploitation</span><span>Privilege escalation</span><span>Reporting</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-cat">Tools</div>
+              <div class="skill-list">
+                <span>Nmap</span><span>Burp Suite</span><span>Metasploit</span><span>Wireshark</span><span>Gobuster</span><span>sqlmap</span><span>Hydra</span><span>John</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-cat">Operating systems</div>
+              <div class="skill-list">
+                <span>Kali Linux</span><span>Parrot OS</span><span>Ubuntu</span><span>Windows</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-cat">Programming</div>
+              <div class="skill-list">
+                <span>Python</span><span>Bash</span><span>C</span><span>SQL</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-cat">Networking</div>
+              <div class="skill-list">
+                <span>TCP/IP</span><span>HTTP/S</span><span>DNS</span><span>VPN</span><span>OWASP Top 10</span><span>OWASP API Top 10</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-cat">Concepts</div>
+              <div class="skill-list">
+                <span>Threat modeling</span><span>Defense in depth</span><span>Cryptography basics</span><span>Linux internals</span><span>Active Directory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" data-screen-label="05 Certifications">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="num">05 / 06</div>
+          <div class="label">Certifications</div>
+          <div class="rule"></div>
+          <p class="helper">Issued, in progress, and stacked. CEH on track for completion this cycle.</p>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">Credentials &amp; coursework.</h2>
+          <p class="section-lede reveal">Formal certifications and structured courses, by issuer.</p>
+
+          <div class="certs reveal-children">
+            <div class="cert-row">
+              <div class="cert-name">Certified Ethical Hacker (CEH)</div>
+              <div class="cert-issuer">EC-Council</div>
+              <div class="cert-status in-progress">In progress</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Web Fundamentals</div>
+              <div class="cert-issuer">TryHackMe</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Cyber Security 101</div>
+              <div class="cert-issuer">TryHackMe</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Pre Security</div>
+              <div class="cert-issuer">TryHackMe</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">CS50 - Introduction to Computer Science</div>
+              <div class="cert-issuer">Harvard</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Python Essentials</div>
+              <div class="cert-issuer">Cisco</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Introduction to Cybersecurity</div>
+              <div class="cert-issuer">Cisco</div>
+              <div class="cert-status complete">Complete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" data-screen-label="06 Education">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="label">Education</div>
+          <div class="rule"></div>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">Academic background.</h2>
+
+          <div class="certs reveal-children">
+            <div class="cert-row">
+              <div class="cert-name">Bachelor of Science in Computer Science</div>
+              <div class="cert-issuer">University of Karachi (UBIT)</div>
+              <div class="cert-status complete">Feb 2024 - Apr 2028</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">Certified Ethical Hacker (CEH) - In Progress</div>
+              <div class="cert-issuer">Corvit Systems Karachi</div>
+              <div class="cert-status in-progress">Feb 2026 - May 2026</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">HSC / Intermediate - Pre-Engineering</div>
+              <div class="cert-issuer">Govt. College for Men, Nazimabad</div>
+              <div class="cert-status complete">Nov 2021 - Jun 2023</div>
+            </div>
+            <div class="cert-row">
+              <div class="cert-name">SSC - Computer Science</div>
+              <div class="cert-issuer">Metropolis Academy</div>
+              <div class="cert-status complete">Jan 2019 - Jun 2021</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CV -->
+  <section id="cv" aria-labelledby="cv-title">
+    <div class="container">
+      <div class="cv reveal">
+        <div>
+          <div class="eyebrow" style="margin-bottom: 12px;">Curriculum vitae</div>
+          <h2 class="cv-title" id="cv-title">The full document, on one page.</h2>
+          <p class="cv-sub">PDF · A4 · Updated April 2026</p>
+        </div>
+        <a class="btn btn-primary" href="./rayyan-cv.pdf" download>
+          <span>Download CV</span>
+          <span class="arr" aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-screen-label="06 Contact">
+    <div class="container">
+      <div class="section-grid">
+        <aside class="section-rail">
+          <div class="num">06 / 06</div>
+          <div class="label">Contact</div>
+          <div class="rule"></div>
+          <p class="helper">Email is fastest. Open to internships, junior offensive security roles, and CTF teams.</p>
+        </aside>
+
+        <div>
+          <h2 class="section-title reveal">Get in touch.</h2>
+          <p class="section-lede reveal">For roles, collaborations, or a CTF team that needs another set of hands - email or any of the channels below.</p>
+
+          <div class="contact-grid reveal">
+            <a class="contact-cell" href="mailto:rayyanshahnawaz041@gmail.com">
+              <span class="contact-k">Email</span>
+              <span class="contact-v">rayyanshahnawaz041@gmail.com <span class="arr" aria-hidden="true">→</span></span>
+            </a>
+            <a class="contact-cell" href="https://github.com/smrayyans" target="_blank" rel="noopener noreferrer">
+              <span class="contact-k">GitHub</span>
+              <span class="contact-v">github.com/smrayyans <span class="arr" aria-hidden="true">↗</span></span>
+            </a>
+            <a class="contact-cell" href="https://linkedin.com/in/smrayyans" target="_blank" rel="noopener noreferrer">
+              <span class="contact-k">LinkedIn</span>
+              <span class="contact-v">linkedin.com/in/smrayyans <span class="arr" aria-hidden="true">↗</span></span>
+            </a>
+            <a class="contact-cell" href="https://tryhackme.com/p/smrayyans" target="_blank" rel="noopener noreferrer">
+              <span class="contact-k">TryHackMe</span>
+              <span class="contact-v">tryhackme.com/p/smrayyans <span class="arr" aria-hidden="true">↗</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-meta">
+      <div><span class="v">Syed Muhammad Rayyan</span> - Karachi, PK</div>
+      <div>v1.0.0 · static · no analytics · no trackers</div>
+      <div>© 2026</div>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:rayyanshahnawaz041@gmail.com">Email</a>
+      <a href="https://github.com/smrayyans" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/smrayyans" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://tryhackme.com/p/smrayyans" target="_blank" rel="noopener noreferrer">TryHackMe</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Live Karachi clock (PKT, UTC+5) ----
+  var clockEl = document.getElementById('clock');
+  function tick() {
+    if (!clockEl) return;
+    try {
+      var now = new Date();
+      var hh = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Karachi' });
+      clockEl.textContent = hh + ' PKT';
+    } catch (e) {
+      // Fallback if Intl/timezone fails
+      var d = new Date();
+      var utc = d.getTime() + d.getTimezoneOffset() * 60000;
+      var pkt = new Date(utc + 5 * 3600000);
+      var h = String(pkt.getHours()).padStart(2, '0');
+      var m = String(pkt.getMinutes()).padStart(2, '0');
+      clockEl.textContent = h + ':' + m + ' PKT';
+    }
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  // ---- Scroll progress ----
+  var bar = document.getElementById('progressBar');
+  function onScroll() {
+    if (!bar) return;
+    var doc = document.documentElement;
+    var scrolled = doc.scrollTop || document.body.scrollTop;
+    var height = (doc.scrollHeight - doc.clientHeight) || 1;
+    var pct = Math.max(0, Math.min(100, (scrolled / height) * 100));
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ---- Reveal on intersect ----
+  var revealEls = document.querySelectorAll('.reveal, .reveal-children');
+
+  // Synchronous pass: anything already in (or near) the viewport reveals immediately.
+  function inViewportNow(el) {
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    return r.top < vh * 0.95 && r.bottom > 0;
+  }
+  revealEls.forEach(function (el) {
+    if (inViewportNow(el)) el.classList.add('in');
+  });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    revealEls.forEach(function (el) {
+      if (!el.classList.contains('in')) io.observe(el);
+    });
+  }
+
+  // Belt-and-braces fallback: if anything is still hidden after a beat, reveal it.
+  setTimeout(function () {
+    revealEls.forEach(function (el) {
+      if (!el.classList.contains('in') && inViewportNow(el)) el.classList.add('in');
+    });
+  }, 250);
+  // Final guarantee: nothing stays invisible forever.
+  setTimeout(function () {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }, 1500);
+
+  // ---- Active nav state via section observation ----
+  var navLinks = document.querySelectorAll('.nav-link');
+  var sections = ['experience', 'projects', 'skills', 'contact']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+
+  function setActive(id) {
+    navLinks.forEach(function (link) {
+      var isActive = link.getAttribute('data-target') === id;
+      link.classList.toggle('is-active', isActive);
+    });
+  }
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var current = null;
+    var sio = new IntersectionObserver(function (entries) {
+      // pick the entry closest to top that is intersecting
+      var visible = entries.filter(function (e) { return e.isIntersecting; });
+      if (visible.length === 0) return;
+      visible.sort(function (a, b) { return Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top); });
+      var id = visible[0].target.id;
+      if (id !== current) { current = id; setActive(id); }
+    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.25, 0.5, 1] });
+    sections.forEach(function (s) { sio.observe(s); });
+  }
+
+  // ---- Smooth scroll for hash links (respect reduced motion) ----
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      var target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 56;
+      window.scrollTo({ top: top, behavior: prefersReduced ? 'auto' : 'smooth' });
+      // close mobile sheet if open
+      if (sheet && sheet.classList.contains('open')) closeSheet();
+    });
+  });
+
+  // ---- Mobile nav sheet ----
+  var toggle = document.getElementById('navToggle');
+  var sheet = document.getElementById('mobileSheet');
+  var label = document.getElementById('navToggleLabel');
+  function openSheet() {
+    if (!sheet) return;
+    sheet.hidden = false;
+    requestAnimationFrame(function () { sheet.classList.add('open'); });
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    if (label) label.textContent = 'close';
+  }
+  function closeSheet() {
+    if (!sheet) return;
+    sheet.classList.remove('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    if (label) label.textContent = 'menu';
+    setTimeout(function () { if (!sheet.classList.contains('open')) sheet.hidden = true; }, 240);
+  }
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      if (sheet && sheet.classList.contains('open')) closeSheet();
+      else openSheet();
+    });
+  }
+
+})();
+</script>
+
+</body>
 </html>
